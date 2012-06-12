@@ -29,18 +29,26 @@
 	<![endif]-->
 
 </head>
+<?php $file=File_get_contents('/etc/dhcp/dhcpd.conf');?>
 <body>
 <div class="container">
-<h3>Tabs</h3>
+<h3>PHP DHCP</h3>
 				<dl class="tabs">
-					<dd><a href="#simple1" class="active">Simple Tab 1</a></dd>
-					<dd><a href="#simple2">Simple Tab 2</a></dd>
-					<dd><a href="#simple3">Simple Tab 3</a></dd>
+					<dd><a href="#simple1" class="active">Edit Form</a></dd>
+					<dd><a href="#simple2">DHCP File</a></dd>
+					<dd><a href="#simple3">Devices</a></dd>
 				</dl>
 
 				<ul class="tabs-content">
-					<li class="active" id="simple1Tab">This is simple tab 1's content. Pretty neat, huh?</li>
-					<li id="simple2Tab">This is simple tab 2's content. Now you see it!</li>
-					<li id="simple3Tab">This is simple tab 3's content. It's, you know...okay.</li>
+					<li class="active" id="simple1Tab"><?php include "classes/class.ipaddresses.php"?></li>
+					<li id="simple2Tab"><?php echo'<pre>'.$file.'</pre>'?></li>
+					<li id="simple3Tab"><?php include "classes/class.devices.php"?></li>
 				</ul>
 </div>
+
+<script src="javascripts/jquery.min.js"></script>
+	<script src="javascripts/foundation.js"></script>
+	<script src="javascripts/app.js"></script>
+	
+</body>
+</html>
