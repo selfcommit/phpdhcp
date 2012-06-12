@@ -7,6 +7,7 @@ phpDHCP
 Adding a static entry to dhcp3 on ubuntu.
 
 ####Define the scope
+<code>
  subnet 192.168.1.0 netmask 255.255.255.0 {
 
         option routers                  192.168.1.1;
@@ -18,8 +19,7 @@ Adding a static entry to dhcp3 on ubuntu.
         option netbios-node-type 2;
         default-lease-time 86400;
         max-lease-time 86400;
-		
-;Define the individual Hosts
+	;Define the individual Hosts
 	host bla1 {
                 hardware ethernet DD:GH:DF:E5:F7:D7;
                 fixed-address 192.168.1.2;
@@ -28,4 +28,5 @@ Adding a static entry to dhcp3 on ubuntu.
                 hardware ethernet 00:JJ:YU:38:AC:45;
                 fixed-address 192.168.1.20;
         }
-} ;<-- Don't forget to close the scope/subnet
+	} ;<-- Don't forget to close the scope/subnet
+</code>
