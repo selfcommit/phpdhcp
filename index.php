@@ -11,7 +11,7 @@
 	<!-- Set the viewport width to device width for mobile -->
 	<meta name="viewport" content="width=device-width" />
 
-	<title>Welcome to Foundation</title>
+	<title>PHP DHCP</title>
   
 	<!-- Included CSS Files -->
 	<link rel="stylesheet" href="stylesheets/foundation.css">
@@ -29,7 +29,10 @@
 	<![endif]-->
 
 </head>
-<?php $file=File_get_contents('/etc/dhcp/dhcpd.conf');?>
+<?php 	
+$file=File_get_contents('/etc/dhcp/dhcpd.conf');
+$file2=File_get_contents('/home/doboyle/dhcp_test.txt');
+?>
 <body>
 <div class="container">
 <h3>PHP DHCP</h3>
@@ -40,8 +43,10 @@
 				</dl>
 
 				<ul class="tabs-content">
-					<li class="active" id="simple1Tab"><?php include "classes/class.ipaddresses.php"?></li>
-					<li id="simple2Tab"><?php echo'<pre>'.$file.'</pre>'?></li>
+					<li class="active" id="simple1Tab"><?php include "classes/class.ipaddresses.php";
+					?></li>
+					<li id="simple2Tab"><?php echo'<pre>'.$file.'</pre>'?>
+					</li>
 					<li id="simple3Tab"><?php include "classes/class.devices.php"?></li>
 				</ul>
 </div>

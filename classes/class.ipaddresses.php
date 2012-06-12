@@ -35,5 +35,6 @@ function rebuild_DHCP() {
 //writes variable into file_put_contents(/etc/dhcp/dhcpd.conf)
 
 //restarts dhcp service
+exec('bash /home/doboyle/dhcp_restart.sh');
 						}							
 ?>
