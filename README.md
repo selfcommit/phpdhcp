@@ -4,7 +4,10 @@ phpDHCP
 ##Web page for managing District wide ip addressing 
 
 ###Notes:
-Adding a static entry to dhcp3 on ubuntu.
+
+###DHCP config file location:
+/etc/dhcp/dhcpd.conf
+###Adding a static entry to dhcp3 on ubuntu:
 
 ####Define the scope
 <code>
