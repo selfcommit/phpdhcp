@@ -43,11 +43,10 @@ $file2=File_get_contents('/home/doboyle/dhcp_test.txt');
 				</dl>
 
 				<ul class="tabs-content">
-					<li class="active" id="simple1Tab"><?php include "classes/class.ipaddresses.php";
-					?></li>
+					<li class="active" id="simple1Tab">For for entering devices goes here</li>
 					<li id="simple2Tab"><?php echo'<pre>'.$file.'</pre>'?>
 					</li>
-					<li id="simple3Tab"><?php include "classes/class.devices.php"?></li>
+					<li id="simple3Tab">Device list here</li>
 				</ul>
 </div>
 

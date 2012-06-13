@@ -1,7 +1,7 @@
 <?php echo "IP addressesing class"; 
 
 
-function Assign_IP ($mac,$group) 	{
+function Assign_IP ($mac,$deviceID,$group) 	{
 //Takes in the mac address of a device to be added
 
 //access the Database
@@ -15,6 +15,7 @@ function Assign_IP ($mac,$group) 	{
 //return IP address
 							}
 							
+
 function Remove_IP ($mac) 	{
 //Takes in a mac address of a device to be added
 
@@ -25,6 +26,24 @@ function Remove_IP ($mac) 	{
 //If Found, clears device ID for the IP address
 
 							}
+							
+function Assign_teacherIP ($mac, $deviceID)	{
+//Takes in deviceID and MAC
+
+//Checks to see if Mac addresss is in use 
+
+//If MAC is unique, assigns device ID to IP address in Every staff Subnet (Group)
+
+											}
+
+function Remove_teacherIP ($mac)	{
+//Takes in deviceID and MAC
+
+//Looks for MAC, clears DeviceID for each entry
+
+											}											
+			
+
 
 function rebuild_DHCP() {
 //renames /etc/dhcp/dhcpd.conf to /etc/dhcp/dhcpd.conf_old
