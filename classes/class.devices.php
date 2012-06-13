@@ -31,8 +31,9 @@ function remove_device($mac){
 	
 							}
 							
-function search_devices($mac,$device_name,$group,$htps_serial,$IP_Required)
+function retrieve_all_devices() {
 //Returns entire list of devices
 
 //List.JS allows for real time searching of list
+}
 ?>
