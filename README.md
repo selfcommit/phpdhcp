@@ -1,3 +1,9 @@
+To do
+1) Can we block off all non used address so we don't give out any non registered machines an address
+    If we need to specify a range then we have to note what is used and not used
+    If we can just say do not give any out, great!
+
+
 phpDHCP
 =======
 
