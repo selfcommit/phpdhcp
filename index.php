@@ -29,7 +29,10 @@
 	<![endif]-->
 
 </head>
-<?php 	
+<?php
+
+include "classes/class.database.php";
+$databee = new database();
 $file=File_get_contents('/etc/dhcp/dhcpd.conf');
 $file2=File_get_contents('/home/doboyle/dhcp_test.txt');
 ?>
@@ -43,7 +46,7 @@ $file2=File_get_contents('/home/doboyle/dhcp_test.txt');
 				</dl>
 
 				<ul class="tabs-content">
-					<li class="active" id="simple1Tab">For for entering devices goes here</li>
+					<li class="active" id="simple1Tab"><?php $databee->connect(); ?></li>
 					<li id="simple2Tab"><?php echo'<pre>'.$file.'</pre>'?>
 					</li>
 					<li id="simple3Tab">Device list here</li>
