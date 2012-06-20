@@ -1,5 +1,5 @@
-<?php echo "IP addressesing class"; 
-
+<?php 
+class ipaddress	{
 
 function Assign_IP ($mac,$deviceID,$group) 	{
 //Takes in the mac address of a device to be added
@@ -60,4 +60,5 @@ function rebuild_DHCP() {
 //restarts dhcp service
 exec('/bin/bash /home/doboyle/dhcp_restart.sh');
 						}							
+				}
 ?>
