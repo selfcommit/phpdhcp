@@ -1,4 +1,5 @@
-To do
+To do:
+
 1) Can we block off all non used address so we don't give out any non registered machines an address - Response : This can be Resolved by not entering a range in the pool Tested on 6-22
 
 2) Add Large Text Drop box for CSV style text entries (See Bulk Upload Tab)
@@ -7,9 +8,8 @@ Steps:
 -Break into Array by commas
 -For Each -> AddDevice
 
-
-
-3)Work with Joel on strange SQL returns.   
+3) Complete database
+ 
 
 
 

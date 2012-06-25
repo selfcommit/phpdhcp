@@ -109,33 +109,94 @@ function rebuild_DHCP() {
 	$database="phpdhcp";
 	$con = connect_DB();
 	$db = mysql_select_db($database);
+	$dhcp_info = "# The ddns-updates-style parameter controls whether or not the server will \r\n
+# attempt to do a DNS update when a lease is confirmed. We default to the \r\n
+# behavior of the version 2 packages ('none', since DHCP v2 didn't \r\n
+# have support for DDNS.) \r\n
+ddns-update-style none; \r\n
+
+# option definitions common to all supported networks... \r\n
+option domain-name \"hillsborough.k12.nj.us\";  \r\n
+default-lease-time 600; \r\n
+max-lease-time 7200; \r\n
+
+# If this DHCP server is the official DHCP server for the local \r\n
+# network, the authoritative directive should be uncommented. \r\n
+authoritative; \r\n
+
+# Use this to send dhcp log messages to a different log file (you also \r\n
+# have to hack syslog.conf to complete the redirection). \r\n
+log-facility local7; \r\n \r\n
+
+\r\n
+subnet 172.16.3.0 netmask 255.255.255.0 {
+}
+\r\n" ;
+ 
 //renames /etc/dhcp/dhcpd.conf to /etc/dhcp/dhcpd.conf_old
 if(rename("/etc/dhcp/dhcpd.conf","/etc/dhcp/dhcpd.conf_old")){
 print "rename was successfull";
 }else{
 print "Rename didn't work, are premissions set correctly?";
 }
+
 //rebuilds DHCP file into a variable based on DB information
-$request=mysql_query("SELECT * FROM `IP_Table` WHERE `MAC` IS NOT NULL") or die("Can not query DB: " . mysql_error());
+$request=mysql_query("SELECT * FROM `IP_Table` WHERE `DeviceID`!=0 ORDER BY `IPID`") or die("Can not query DB: " . mysql_error());
 	if(mysql_num_rows($request) != 0)	{
-	$row = mysql_fetch_array($request);
-	foreach ($row as $entry){
-		print "<br>$entry<br>";
-							}
+	//$row = mysql_fetch_assoc($request);
+	//print_r($row);
+	while ($row = mysql_fetch_assoc($request))	{
+		print "<br>"."IPID ".$row['IPID']."Device ID ".$row['DeviceID']." MAC Address ".$row['MAC']."IPAddress".$row['IPAddress']."<br>";
+	
+		if ($row['DeviceID']==1 xor $row['DeviceID']==2 xor $row['DeviceID']==3)	{
+
+			if ($row['DeviceID']==1) 	{
+			print "Subnet Found.";	
+			$subnet_array=explode(".",$row['IPAddress']);
+			$subnet_min=$subnet_array[0].".".$subnet_array[1].".0.3";
+			$subnet_max=$subnet_array[0].".".$subnet_array[1].".0.4";
+			print_r($subnet_array);
+			$dhcp_info .= "subnet $row[IPAddress] netmask 255.255.252.0 { range $subnet_min $subnet_max; } \r\n";
 										}
+										
+			if ($row['DeviceID']==2) 	{
+			print "Gateway Found.";																		
+										}							
+										
+			if ($row['DeviceID']==1) 	{
+			print "Broadcast Found.";																		
+										}							
+																				
+		}else	{
+			if (mac_validation($row['MAC'])) 	{
+			print "adding DHCP entry for device ".$row['DeviceID']."\r\n";
+			$dhcp_info .= " \t host $row[DeviceID] { hardware ethernet $row[MAC]; fixed-address $row[IPAddress]; } \r\n";
+			}else	{
+			print "Can Not add DHCP for Device ".$row['DeviceID']. " The MAC address is not valid.";
+					}
+				}
+												}
+										}
+										
 //Builds entry only if IP address has a DeviceID
 		
 //writes variable into file_put_contents(/etc/dhcp/dhcpd.conf)
 
+file_put_contents("/etc/dhcp/dhcpd.conf",$dhcp_info);
+
 //restarts dhcp service
 exec('/bin/bash /home/doboyle/dhcp_restart.sh');
+disconnect_DB($con);
 }
 																				
-function remove_device($mac){
+function remove_device($MAC){
 	//connects DB
+	$database="phpdhcp";
+	$con = connect_DB();
+	$db = mysql_select_db($database);
 
 	//Searches device DB for matching MAC address
-
+$request=mysql_query("SELECT * FROM `Device_Table` WHERE `MAC`=$MAC") or die("Can not query DB: " . mysql_error());
 	//If Mac is found, removes device, calls Remove_IP
 
 	//closes DB
@@ -150,16 +211,14 @@ function retrieve_all_devices() {
 	$con = connect_DB();
 	$db = mysql_select_db($database);
 //populate array	
-	$request = mysql_query("SELECT MAC FROM Device_Table");
-	if (mysql_num_rows($request) != 0){
-	$row = mysql_fetch_array($request);
-	var_dump($row);
-	return $row;
-	//mysql_free_result($request);  //clear memory after
-	}else{
-	die('Could not Print Device list: ' . mysql_error());
-	}
-	}
+	$request=mysql_query("SELECT * FROM `Device_Table` WHERE `MAC` IS NOT NULL") or die("Can not query DB: " . mysql_error());
+	
+	while ($row = mysql_fetch_assoc($request))	{
+	print "<br>"."\t DeviceID ".$row['DeviceID']."\t MAC ".$row['MAC']."\t User ".$row['User']."\t HTPS_SERIAL ".$row['HTPS_SERIAL']."<br>";
+												}
+	mysql_free_result($request);  //clear memory after
+	
+								}
 									
 	
 function connect_DB() 	{

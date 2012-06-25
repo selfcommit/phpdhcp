@@ -39,7 +39,7 @@ $file2=File_get_contents('dhcp_test.txt');
 <h3>PHP DHCP</h3>
 				<dl class="tabs">
 					<dd><a href="#simple1" class="active">Add a Device</a></dd>
-					<dd><a href="#simple2" class="active">Remove a Device</a></dd>
+					<dd><a href="#simple2">Remove a Device</a></dd>
 					<dd><a href="#simple3">All Devices</a></dd>
 					<dd><a href="#simple4">Bulk Import</a></dd>
 					<dd><a href="#simple5">DHCP File</a></dd>
@@ -84,18 +84,18 @@ $file2=File_get_contents('dhcp_test.txt');
 					<option value="27">Staff Mobile Device</option>
 					</select>
 					<br/>
-					<input type="Submit" class="nice green button" value="Enter Address">
+					<input type="Submit" name="add" class="nice green button" value="Enter Address">
 					</form>
 					</li>
 					
 					<li id="simple2Tab">
 					<form name="remove" action="build.php" method="post">
 					<input type="text" class="input-text" placeholder="Enter Device Mac Address" name="MAC">
-					<input type="Submit" class="nice red button" value="Remove Device">
+					<input type="Submit" name="remove" class="nice red button" value="Remove Device">
 					</form>
 					</li>
 					
-					<li id="simple3Tab">All devices go here
+					<li id="simple3Tab"><?php retrieve_all_devices(); ?>
 					</li>
 					
 					<li id="simple4Tab">
