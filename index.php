@@ -28,6 +28,17 @@
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 
+	<!-- Javascript for Hide/show boxes-->
+<script language="javascript">
+function toggleDiv(divid){
+if(document.getElementById(divid).style.display == 'none'){
+document.getElementById(divid).style.display = 'block';
+}else{
+document.getElementById(divid).style.display = 'none';
+}
+}
+</script>
+
 </head>
 <?php
 include "functions.php";
@@ -99,9 +110,21 @@ $file2=File_get_contents('dhcp_test.txt');
 					</li>
 					
 					<li id="simple4Tab">
-					<?php rebuild_DHCP(); ?>
+					<form name="bulk" action="build.php" method="post">
+					Please paste file in CSV format!
+					<textarea name="upload" cols="40" rows="5">
+					</textarea><br>
+					<input type="Submit" name="bulk" class="nice blue button" value="Bulk Upload">
+					</form>
 					</li>
-					<li id="simple5Tab"><?php echo'<pre>'.$file.'</pre>'?>
+					<li id="simple5Tab">
+					<a class="small white nice button radius" href="javascript:;" onmousedown="toggleDiv('build-details');">Hide/Show Build Details</a>
+					<br>
+					<br>
+					<div id="build-details" style="display: none; ">
+					<?php rebuild_DHCP(); ?>
+					</div>
+					<?php echo'<pre>'.$file.'</pre>'?>
 					</li>
 				</ul>
 </div>

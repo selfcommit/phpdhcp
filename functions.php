@@ -18,8 +18,8 @@ function add_device($MAC,$device_name,$group,$ip_required)	{
 	//searches devices Tables for mac address
 	$request = mysql_query("SELECT DeviceID FROM `Device_Table` WHERE MAC='$MAC'");
 		if(mysql_num_rows($request) != 0){
-		$row = mysql_fetch_array($request);
-		$deviceID = $row[0];
+		$row = mysql_fetch_assoc($request);
+		$deviceID = $row['DeviceID'];
 		print "This device is already in the database as Device ID $deviceID <br>";
 
 		}else	{
@@ -28,8 +28,8 @@ function add_device($MAC,$device_name,$group,$ip_required)	{
 		print "No entry was found for this device, adding it to the database. <br>";
 		mysql_query("INSERT INTO `Device_Table` (`MAC`, `User`, `HTPS_SERIAL`) VALUES ('$MAC','dummy','bad_Serial');");
 		$request = mysql_query("SELECT DeviceID FROM `Device_Table` WHERE MAC='$MAC'");
-		$row = mysql_fetch_array($request);
-		$deviceID = $row[0];
+		$row = mysql_fetch_assoc($request);
+		$deviceID = $row['DeviceID'];
 		print "The Device was successfully added to the database.  It's deviceID is $deviceID <br>";
 				}
 
@@ -46,11 +46,15 @@ function add_device($MAC,$device_name,$group,$ip_required)	{
 				}
 	//returns success or failure message
 																			}
+																			
+function add_bulk($CSV)	{ 
+	$database="phpdhcp";																			
+	print "<br> Bulk called <br>";
+	print_r($CSV);
 
-
+															}
 function mac_validation($val) { 
-return (bool)preg_match('/^([0-9a-fA-F][0-9a-fA-F]:){5}([0-9a-fA-F][0-9a-fA-F])$/', 
-$val); 
+	return (bool)preg_match('/^([0-9a-fA-F][0-9a-fA-F]:){5}([0-9a-fA-F][0-9a-fA-F])$/', $val); 
 }
 
 function Assign_IP ($MAC,$deviceID,$group) 	{
@@ -135,13 +139,14 @@ subnet 172.16.3.0 netmask 255.255.255.0 {
  
 //renames /etc/dhcp/dhcpd.conf to /etc/dhcp/dhcpd.conf_old
 if(rename("/etc/dhcp/dhcpd.conf","/etc/dhcp/dhcpd.conf_old")){
-print "rename was successfull";
+print "rename of /etc/dhcp/dhcpd.conf to /etc/dhcp/dhcpd.conf_old was successfull <br/>";
 }else{
-print "Rename didn't work, are premissions set correctly?";
+//die("Rename didn't work, are premissions set correctly?");
+
 }
 
 //rebuilds DHCP file into a variable based on DB information
-$request=mysql_query("SELECT * FROM `IP_Table` WHERE `DeviceID`!=0 ORDER BY `IPID`") or die("Can not query DB: " . mysql_error());
+$request=mysql_query("SELECT * FROM `IP_Table` WHERE `DeviceID`!=0 ORDER BY `Group`,`DeviceID`") or die("Can not query DB: " . mysql_error());
 	if(mysql_num_rows($request) != 0)	{
 	//$row = mysql_fetch_assoc($request);
 	//print_r($row);
@@ -156,15 +161,18 @@ $request=mysql_query("SELECT * FROM `IP_Table` WHERE `DeviceID`!=0 ORDER BY `IPI
 			$subnet_min=$subnet_array[0].".".$subnet_array[1].".0.3";
 			$subnet_max=$subnet_array[0].".".$subnet_array[1].".0.4";
 			print_r($subnet_array);
-			$dhcp_info .= "subnet $row[IPAddress] netmask 255.255.252.0 { range $subnet_min $subnet_max; } \r\n";
+			$dhcp_info .= "subnet $row[IPAddress] netmask 255.255.252.0 {  \r\n";
 										}
 										
 			if ($row['DeviceID']==2) 	{
-			print "Gateway Found.";																		
+			print "Gateway Found.";
+			$dhcp_info .= "option routers $row[IPAddress]; \r\n";
 										}							
 										
-			if ($row['DeviceID']==1) 	{
-			print "Broadcast Found.";																		
+			if ($row['DeviceID']==3) 	{
+			print "Broadcast Found.";
+			$dhcp_info .= "option broadcast-address $row[IPAddress];
+			} \r\n";
 										}							
 																				
 		}else	{
