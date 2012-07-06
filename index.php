@@ -54,6 +54,8 @@ $file2=File_get_contents('dhcp_test.txt');
 					<dd><a href="#simple3">All Devices</a></dd>
 					<dd><a href="#simple4">Bulk Import</a></dd>
 					<dd><a href="#simple5">DHCP File</a></dd>
+					<dd><a href="#simple6">Techs Group</a></dd>
+					
 		
 				</dl>
 
@@ -83,7 +85,7 @@ $file2=File_get_contents('dhcp_test.txt');
 					<option value="11">11th Grade student</option>
 					<option value="12">12th Grade student</option>
 					<option value="17">HHS Wired Device</option>
-					<option value="18">HES Wired Device</option>
+					<option value="18">HES/BLO? Wired Device</option>
 					<option value="19">ARS Wired Device</option>
 					<option value="20">AMS Wired Device</option>
 					<option value="21">HES Wired Device</option>
@@ -125,6 +127,23 @@ $file2=File_get_contents('dhcp_test.txt');
 					<?php rebuild_DHCP(); ?>
 					</div>
 					<?php echo'<pre>'.$file.'</pre>'?>
+					</li>
+					
+					<li id="simple6Tab">
+					<iframe id="forum_embed"
+					src="javascript:void(0)"
+					scrolling="no"
+					frameborder="0"
+					width="900"
+					height="700">
+					</iframe>
+					<script type="text/javascript">
+					document.getElementById('forum_embed').src =
+					'https://groups.google.com/a/htps.us/forum/embed/?place=forum/techs'
+					+ '&showsearch=true&showpopout=true&showtabs=false'
+					+ '&parenturl=' + encodeURIComponent(window.location.href);
+					</script>
+					</ul>
 					</li>
 				</ul>
 </div>

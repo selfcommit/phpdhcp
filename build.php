@@ -12,14 +12,13 @@ include "functions.php";
  }
  
  if (isset($_POST['remove'])) {
-	print "This is the remove form";
+	$MAC = $_POST["MAC"]; 
+	remove_device($MAC);
  }
 
  if (isset($_POST['bulk'])) 	{
 	$CSV = explode(",",$_POST['upload']);
 	add_bulk($CSV);
 
-}else{
-	print "You didn't enter any data!";
- }
+}
 ?>

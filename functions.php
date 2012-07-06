@@ -1,7 +1,7 @@
 <?php
 function add_device($MAC,$device_name,$group,$ip_required)	{  
 	$database="phpdhcp";
-	echo "Add Device Function Called <br>";
+	echo "<br> Add Device Function Called <br>";
 	$IS_MAC=mac_validation($MAC); //Checks to see if the Mac address supplied is valid
 		if($IS_MAC) {
 		echo "Valid Mac Address has been entered. <br>";
@@ -51,6 +51,18 @@ function add_bulk($CSV)	{
 	$database="phpdhcp";																			
 	print "<br> Bulk called <br>";
 	print_r($CSV);
+	$entries = count($CSV)/4;
+	print "<br> $entries Devices entries found";
+	
+		for ($x=0; $x < $entries; $x++) {
+		print "<br> Attempting to send device $entries";
+		$MAC = $CSV[0] + (4*$x);
+		$device_name = $CSV[1] + (4*$x);
+		$group = $CSV[2] + (4*$x);
+		$ip_required = $CSV[3] + (4*$x);
+		add_device($MAC,$device_name,$group,$ip_required);
+		}
+		
 
 															}
 function mac_validation($val) { 
@@ -76,7 +88,7 @@ function Assign_IP ($MAC,$deviceID,$group) 	{
 			}else{
 			//If DeviceID is unique look for next available IP according to $group
 			print "No IP entry found for this device, adding it now.";
-			$request = mysql_query("SELECT * FROM `IP_Table` WHERE `DeviceID`='0' AND `Group`=$group") or die("Can not query DB: " . mysql_error()); //check for free IPS
+			$request = mysql_query("SELECT * FROM `IP_Table` WHERE `DeviceID`='0' AND `Group`=$group") or die("Fail within AssignIP: " . mysql_error()); //check for free IPS
 				if(mysql_num_rows($request) != 0)	{
 				$row = mysql_fetch_array($request);
 				//var_dump($row);
@@ -146,16 +158,16 @@ print "rename of /etc/dhcp/dhcpd.conf to /etc/dhcp/dhcpd.conf_old was successful
 }
 
 //rebuilds DHCP file into a variable based on DB information
-$request=mysql_query("SELECT * FROM `IP_Table` WHERE `DeviceID`!=0 ORDER BY `Group`,`DeviceID`") or die("Can not query DB: " . mysql_error());
+$request=mysql_query("SELECT * FROM `IP_Table` WHERE `DeviceID`!=0 ORDER BY `Group`,`DeviceID`") or die("Fail within DHCP Build: " . mysql_error());
 	if(mysql_num_rows($request) != 0)	{
 	//$row = mysql_fetch_assoc($request);
 	//print_r($row);
 	while ($row = mysql_fetch_assoc($request))	{
 		print "<br>"."IPID ".$row['IPID']."Device ID ".$row['DeviceID']." MAC Address ".$row['MAC']."IPAddress".$row['IPAddress']."<br>";
 	
-		if ($row['DeviceID']==1 xor $row['DeviceID']==2 xor $row['DeviceID']==3)	{
+		if ($row['DeviceID']==-10 xor $row['DeviceID']==-6 xor $row['DeviceID']==-3)	{
 
-			if ($row['DeviceID']==1) 	{
+			if ($row['DeviceID']==-10) 	{
 			print "Subnet Found.";	
 			$subnet_array=explode(".",$row['IPAddress']);
 			$subnet_min=$subnet_array[0].".".$subnet_array[1].".0.3";
@@ -164,12 +176,12 @@ $request=mysql_query("SELECT * FROM `IP_Table` WHERE `DeviceID`!=0 ORDER BY `Gro
 			$dhcp_info .= "subnet $row[IPAddress] netmask 255.255.252.0 {  \r\n";
 										}
 										
-			if ($row['DeviceID']==2) 	{
+			if ($row['DeviceID']==-6) 	{
 			print "Gateway Found.";
 			$dhcp_info .= "option routers $row[IPAddress]; \r\n";
 										}							
 										
-			if ($row['DeviceID']==3) 	{
+			if ($row['DeviceID']==-3) 	{
 			print "Broadcast Found.";
 			$dhcp_info .= "option broadcast-address $row[IPAddress];
 			} \r\n";
@@ -204,7 +216,15 @@ function remove_device($MAC){
 	$db = mysql_select_db($database);
 
 	//Searches device DB for matching MAC address
-$request=mysql_query("SELECT * FROM `Device_Table` WHERE `MAC`=$MAC") or die("Can not query DB: " . mysql_error());
+	//$request = mysql_query("SELECT * FROM `IP_Table` WHERE DeviceID='$deviceID'")
+	$request = mysql_query("SELECT * FROM `Device_Table` WHERE MAC='$MAC'") or die("Fail within Remove Device: " . mysql_error());
+		if(mysql_num_rows($request) != 0){
+			$row = mysql_fetch_assoc($request);
+			$DeviceID = $row['DeviceID'];
+			Print "Remove device found";
+		}else{
+			print "No device found";
+		}
 	//If Mac is found, removes device, calls Remove_IP
 
 	//closes DB
@@ -219,7 +239,7 @@ function retrieve_all_devices() {
 	$con = connect_DB();
 	$db = mysql_select_db($database);
 //populate array	
-	$request=mysql_query("SELECT * FROM `Device_Table` WHERE `MAC` IS NOT NULL") or die("Can not query DB: " . mysql_error());
+	$request=mysql_query("SELECT * FROM `Device_Table` WHERE `MAC` IS NOT NULL") or die("Fail within retrieve All: " . mysql_error());
 	
 	while ($row = mysql_fetch_assoc($request))	{
 	print "<br>"."\t DeviceID ".$row['DeviceID']."\t MAC ".$row['MAC']."\t User ".$row['User']."\t HTPS_SERIAL ".$row['HTPS_SERIAL']."<br>";
