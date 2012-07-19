@@ -1,17 +1,7 @@
 To do:
+-Complete the subnet editing page
 
-1) Can we block off all non used address so we don't give out any non registered machines an address - Response : This can be Resolved by not entering a range in the pool Tested on 6-22
-
-2) Add Large Text Drop box for CSV style text entries (See Bulk Upload Tab)
-Steps:
--Read in Box
--Break into Array by commas
--For Each -> AddDevice
-
-3) Complete database
- 
-
-
+-Add credentials to the page
 
 phpDHCP
 =======
@@ -48,3 +38,22 @@ phpDHCP
         }
 	} ;<-- Don't forget to close the scope/subnet
 </code>
+
+Group Codes and their meanings:
+117 HS Wired Devices
+118 MS Wired Devices
+119 Auten Rd Wired Devices
+120 AMS Wired Devices
+121 HES Wired Devices
+122 Sunny Mead Wired Devices
+123 Triangle Wired Devices
+124 WoodFern Wired Devices
+125 Woods Rd Wired Devices
+126 BoE Wired Devices
+217-226 Cart Devices network
+317-326 Staff Laptop Network
+417-426 Staff Mobile Devices
+517-526 HTPS1 (Grades 12,8,4)
+617-626 HTPS2 (Grades 11,7,3)
+717-726 HTPS3 (Grades 10,6,2)
+817-826 HTPS4 (Grades 9,5,1)

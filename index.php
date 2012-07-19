@@ -54,7 +54,7 @@ $file2=File_get_contents('dhcp_test.txt');
 					<dd><a href="#simple3">All Devices</a></dd>
 					<dd><a href="#simple4">Bulk Import</a></dd>
 					<dd><a href="#simple5">DHCP File</a></dd>
-					<dd><a href="#simple6">Techs Group</a></dd>
+					<dd><a href="#simple6">Add Subnets/options</a></dd>
 					
 		
 				</dl>
@@ -75,7 +75,9 @@ $file2=File_get_contents('dhcp_test.txt');
 					<label for="customDropdown">Select a Group</label>
 					<select id="customDropdown" name="group">
 					<option value="1">Staff Laptop</option>
-					<option value="4">4th Grade student</option>
+					<option value="2">Staff Mobile Device</option>
+					<option value="3">Cart Devices</option>
+					<option value="4">4th Grade student and lower</option>
 					<option value="5">5th Grade student</option>
 					<option value="6">6th Grade student</option>
 					<option value="7">7th Grade student</option>
@@ -85,7 +87,7 @@ $file2=File_get_contents('dhcp_test.txt');
 					<option value="11">11th Grade student</option>
 					<option value="12">12th Grade student</option>
 					<option value="17">HHS Wired Device</option>
-					<option value="18">HES/BLO? Wired Device</option>
+					<option value="18">HMS Wired Device</option>
 					<option value="19">ARS Wired Device</option>
 					<option value="20">AMS Wired Device</option>
 					<option value="21">HES Wired Device</option>
@@ -94,7 +96,7 @@ $file2=File_get_contents('dhcp_test.txt');
 					<option value="24">WFE Wired Device</option>
 					<option value="25">WRE Wired Device</option>
 					<option value="26">BOE Wired Device</option>
-					<option value="27">Staff Mobile Device</option>
+					<option value="27">BLO Wired Device </option>
 					</select>
 					<br/>
 					<input type="Submit" name="add" class="nice green button" value="Enter Address">
@@ -113,7 +115,12 @@ $file2=File_get_contents('dhcp_test.txt');
 					
 					<li id="simple4Tab">
 					<form name="bulk" action="build.php" method="post">
-					Please paste file in CSV format!
+					Please paste file in the following format: (MAC,Device_Name,Group,IP_Yes/NO(1,0)
+					<label for="customDropdown">Read From local CSV instead?</label>
+					<select id="customDropdown" name="csv">
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+					</select>
 					<textarea name="upload" cols="40" rows="5">
 					</textarea><br>
 					<input type="Submit" name="bulk" class="nice blue button" value="Bulk Upload">
@@ -130,19 +137,23 @@ $file2=File_get_contents('dhcp_test.txt');
 					</li>
 					
 					<li id="simple6Tab">
-					<iframe id="forum_embed"
-					src="javascript:void(0)"
-					scrolling="no"
-					frameborder="0"
-					width="900"
-					height="700">
-					</iframe>
-					<script type="text/javascript">
-					document.getElementById('forum_embed').src =
-					'https://groups.google.com/a/htps.us/forum/embed/?place=forum/techs'
-					+ '&showsearch=true&showpopout=true&showtabs=false'
-					+ '&parenturl=' + encodeURIComponent(window.location.href);
-					</script>
+					<h3>Insert Subnets and special options</h3>
+					<br>
+					<!-- To do: Clean up text entry fields -->
+					<form name="edit_subnet" action="build.php" method="post">
+					<input type="text" class="input-text" placeholder="Enter Device Name" name="device_name">
+					<input type="text" class="input-text" placeholder="Enter Device Mac Address" name="MAC">
+					<br>
+					<input type="Submit" name="edit_subnet" class="white button" value="Edit Subnet">
+					</form>
+					
+					<form name="add_static_ip" action="build.php" method="post">
+					<input type="text" class="input-text" placeholder="Enter Device Name" name="device_name">
+					<input type="text" class="input-text" placeholder="Enter Device Mac Address" name="MAC">
+					<br>
+					<input type="Submit" name="add_subnet" class="green button" value="Add Static IP">
+					</form>
+					
 					</ul>
 					</li>
 				</ul>
