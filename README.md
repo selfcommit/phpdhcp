@@ -39,21 +39,5 @@ phpDHCP
 	} ;<-- Don't forget to close the scope/subnet
 </code>
 
-Group Codes and their meanings:
-117 HS Wired Devices
-118 MS Wired Devices
-119 Auten Rd Wired Devices
-120 AMS Wired Devices
-121 HES Wired Devices
-122 Sunny Mead Wired Devices
-123 Triangle Wired Devices
-124 WoodFern Wired Devices
-125 Woods Rd Wired Devices
-126 BoE Wired Devices
-217-226 Cart Devices network
-317-326 Staff Laptop Network
-417-426 Staff Mobile Devices
-517-526 HTPS1 (Grades 12,8,4)
-617-626 HTPS2 (Grades 11,7,3)
-717-726 HTPS3 (Grades 10,6,2)
-817-826 HTPS4 (Grades 9,5,1)
+Defunct PHP Based DHCP Server.
+The plan was to use server + web portal to dynamicly assign static IP addresses to client systems
