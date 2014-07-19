@@ -1,7 +1,3 @@
-To do:
--Complete the subnet editing page
-
--Add credentials to the page
 
 phpDHCP
 =======
