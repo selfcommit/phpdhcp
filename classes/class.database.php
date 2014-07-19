@@ -3,7 +3,7 @@ class database	{
 	private $username="phpdhcp";
 	private $servername="localhost";
 	private $database="phpdhcp";
-	private $password="YAG6e2RWmJdXJz5B";
+	private $password="lolpass";
 	
 	function connect() 	{
 		$con = mysql_connect($this->servername,$this->username,$this->password);
